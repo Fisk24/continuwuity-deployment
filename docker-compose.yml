@@ -6,6 +6,8 @@ services:
     ### then you are ready to go.
     image: forgejo.ellis.link/continuwuation/continuwuity:main
     restart: unless-stopped
+    env_file:
+      - 'stack.env'
     volumes:
       - db:/var/lib/continuwuity
       #- /etc/resolv.conf:/etc/resolv.conf:ro # Use the host's DNS resolver rather than Docker's.

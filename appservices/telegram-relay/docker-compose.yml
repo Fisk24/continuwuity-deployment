@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  mautrix-telegram:
+    container_name: mautrix-telegram
+    image: dock.mau.dev/mautrix/telegram:<version>
+    restart: unless-stopped
+    networks:
+      - matrix-backend
+    volumes:
+      - /opt/mautrix/telegram:/data
+  
+networks:
+  matrix-backend:
+    external: true

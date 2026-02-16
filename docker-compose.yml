@@ -6,14 +6,13 @@ services:
     ### then you are ready to go.
     image: forgejo.ellis.link/continuwuation/continuwuity:main
     restart: unless-stopped
-    env_file:
-      - 'stack.env'
     volumes:
       - db:/var/lib/continuwuity
       #- /etc/resolv.conf:/etc/resolv.conf:ro # Use the host's DNS resolver rather than Docker's.
       #- ./continuwuity.toml:/etc/continuwuity.toml
     networks:
       - proxy
+      - matrix-backend
     ports:
       - "8448:6167"
     labels:
@@ -61,6 +60,8 @@ networks:
   # This is the network Traefik listens to, if your network has a different
   # name, don't forget to change it here and in the docker-compose.override.yml
   proxy:
+    external: true
+  matrix-backend:
     external: true
 
 # vim: ts=2:sw=2:expandtab

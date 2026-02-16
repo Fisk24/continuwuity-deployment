@@ -17,7 +17,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.continuwuity.entrypoints=http"
-      - "traefik.http.routers.continuwuity.rule=Host(`search.ratsnest.dev`)"
+      - "traefik.http.routers.continuwuity.rule=Host(`chat.ratsnest.dev`)"
       - "traefik.http.middlewares.continuwuity-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.continuwuity.middlewares=continuwuity-https-redirect"
       - "traefik.http.routers.continuwuity.rule=(Host(`chat.ratsnest.dev`) || (Host(`ratsnest.dev`) && PathPrefix(`/.well-known/matrix`)))"

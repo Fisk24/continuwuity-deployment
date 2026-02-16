@@ -1,0 +1,64 @@
+# Continuwuity - Behind Traefik Reverse Proxy
+
+services:
+  matrixserver:
+    ### If you already built the continuwuity image with 'docker build' or want to use the Docker Hub image,
+    ### then you are ready to go.
+    image: forgejo.ellis.link/continuwuation/continuwuity:main
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/continuwuity
+      #- /etc/resolv.conf:/etc/resolv.conf:ro # Use the host's DNS resolver rather than Docker's.
+      #- ./continuwuity.toml:/etc/continuwuity.toml
+    networks:
+      - proxy
+    ports:
+      - "8448:6167"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.continuwuity.entrypoints=http"
+      - "traefik.http.routers.continuwuity.rule=Host(`search.ratsnest.dev`)"
+      - "traefik.http.middlewares.continuwuity-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.continuwuity.middlewares=continuwuity-https-redirect"
+      - "traefik.http.routers.continuwuity.rule=(Host(`chat.ratsnest.dev`) || (Host(`ratsnest.dev`) && PathPrefix(`/.well-known/matrix`)))"
+      - "traefik.http.routers.continuwuity.entrypoints=https" # your HTTPS entry point
+      - "traefik.http.routers.continuwuity.tls=true"
+      - "traefik.http.routers.continuwuity.service=continuwuity"
+      - "traefik.http.services.continuwuity.loadbalancer.server.port=6167"
+      # possibly, depending on your config:
+      # - "traefik.http.routers.continuwuity.tls.certresolver=letsencrypt"
+    environment:
+      CONTINUWUITY_SERVER_NAME: chat.ratsnest.dev # EDIT THIS
+      CONTINUWUITY_DATABASE_PATH: /var/lib/continuwuity
+      CONTINUWUITY_PORT: 6167 # should match the loadbalancer traefik label
+      CONTINUWUITY_MAX_REQUEST_SIZE: 20000000 # in bytes, ~20 MB
+      CONTINUWUITY_ALLOW_REGISTRATION: 'true'
+      CONTINUWUITY_REGISTRATION_TOKEN: ${REG_TOKEN} # A registration token is required when registration is allowed.
+      CONTINUWUITY_ALLOW_FEDERATION: 'true'
+      CONTINUWUITY_ALLOW_CHECK_FOR_UPDATES: 'true'
+      CONTINUWUITY_TRUSTED_SERVERS: '["matrix.org"]'
+      #CONTINUWUITY_LOG: warn,state_res=warn
+      CONTINUWUITY_ADDRESS: 0.0.0.0
+      #CONTINUWUITY_CONFIG: '/etc/continuwuity.toml' # Uncomment if you mapped config toml above
+
+      CONTINUWUITY_WELL_KNOWN: |
+        {
+        client=https://chat.ratsnest.dev,
+        server=chat.ratsnest.dev:443
+        }
+    #cpuset: "0-4" # Uncomment to limit to specific CPU cores
+    ulimits: # Continuwuity uses quite a few file descriptors, and on some systems it defaults to 1024, so you can tell docker to increase it
+      nofile:
+        soft: 1048567
+        hard: 1048567
+
+volumes:
+  db:
+
+networks:
+  # This is the network Traefik listens to, if your network has a different
+  # name, don't forget to change it here and in the docker-compose.override.yml
+  proxy:
+    external: true
+
+# vim: ts=2:sw=2:expandtab

@@ -7,7 +7,7 @@ services:
       - matrix-backend
       - mautrix-internal
     volumes:
-      - /opt/mautrix/telegram:/data
+      - /opt/matrix/appservices/telegram-bridge:/data
   db:
     image: postgres:latest
     restart: always

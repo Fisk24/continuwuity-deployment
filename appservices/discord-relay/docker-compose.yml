@@ -9,7 +9,7 @@ services:
       - matrix-backend
       - mautrix-internal
     volumes:
-      - /opt/mautrix/discord:/data
+      - /opt/matrix/appservices/discord-bridge:/data
   db:
     image: postgres:latest
     restart: always

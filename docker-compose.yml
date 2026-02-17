@@ -9,7 +9,7 @@ services:
     volumes:
       - db:/var/lib/continuwuity
       #- /etc/resolv.conf:/etc/resolv.conf:ro # Use the host's DNS resolver rather than Docker's.
-      - /opt/matrix/homeserver/continuwuity.toml:/etc/continuwuity.toml
+      #- /opt/matrix/homeserver/continuwuity.toml:/etc/continuwuity.toml
     networks:
       - proxy
       - matrix-backend

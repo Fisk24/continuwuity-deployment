@@ -9,7 +9,7 @@ services:
     volumes:
       - db:/var/lib/continuwuity
       #- /etc/resolv.conf:/etc/resolv.conf:ro # Use the host's DNS resolver rather than Docker's.
-      #- ./continuwuity.toml:/etc/continuwuity.toml
+      - /opt/matrix/homeserver/continuwuity.toml:/etc/continuwuity.toml
     networks:
       - proxy
       - matrix-backend
@@ -40,7 +40,7 @@ services:
       CONTINUWUITY_TRUSTED_SERVERS: '["matrix.org"]'
       #CONTINUWUITY_LOG: warn,state_res=warn
       CONTINUWUITY_ADDRESS: 0.0.0.0
-      #CONTINUWUITY_CONFIG: '/etc/continuwuity.toml' # Uncomment if you mapped config toml above
+      CONTINUWUITY_CONFIG: '/etc/continuwuity.toml' # Uncomment if you mapped config toml above
 
       CONTINUWUITY_WELL_KNOWN: |
         {

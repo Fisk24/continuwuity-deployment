@@ -1,1 +1,7 @@
 .env
+stack.env
+registration.yaml
+registration.yml
+config.yaml
+config.yml
+logs

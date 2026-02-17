@@ -1,14 +1,15 @@
 services:
-  mautrix-telegram:
-    container_name: mautrix-telegram
-    image: dock.mau.dev/mautrix/telegram:latest
+  mautrix-discord:
+    container_name: mautrix-discord
+    image: dock.mau.dev/mautrix/discord:latest
+    depends_on: 
+      - db
     restart: unless-stopped
     networks:
       - matrix-backend
       - mautrix-internal
     volumes:
-      - ./data:/data
-    #  - /opt/mautrix/telegram:/data
+    - ./data:/data
   db:
     image: postgres:latest
     restart: always
@@ -17,7 +18,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${PGPASS}
       POSTGRES_USER: mautrix
-      POSTGRES_DB: mautrix_telegram
+      POSTGRES_DB: mautrix_discord
     #ports:
     #  - "5432:5432"
     volumes:

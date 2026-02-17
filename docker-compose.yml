@@ -13,8 +13,8 @@ services:
     networks:
       - proxy
       - matrix-backend
-    ports:
-      - "8448:6167"
+    #ports:
+    #  - "8448:6167"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.continuwuity.entrypoints=http"

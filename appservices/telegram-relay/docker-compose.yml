@@ -7,8 +7,7 @@ services:
       - matrix-backend
       - mautrix-internal
     volumes:
-      - ./data:/data
-    #  - /opt/mautrix/telegram:/data
+      - /opt/mautrix/telegram:/data
   db:
     image: postgres:latest
     restart: always
